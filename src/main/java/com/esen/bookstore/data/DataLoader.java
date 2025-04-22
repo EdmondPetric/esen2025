@@ -1,6 +1,7 @@
 package com.esen.bookstore.data;
 
 import com.esen.bookstore.model.Book;
+import com.esen.bookstore.model.Bookstore;
 import com.esen.bookstore.repository.BookRepository;
 import com.esen.bookstore.repository.BookstoreRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,26 +17,17 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class DataLoader {
 
     private final BookRepository bookRepository;
     private final BookstoreRepository bookstoreRepository;
 
-    public DataLoader(BookRepository bookRepository, BookstoreRepository bookstoreRepository) {
-        this.bookRepository = bookRepository;
-        this.bookstoreRepository = bookstoreRepository;
-    }
-
-    public void setBooksResource(Resource booksResource) {
-        this.booksResource = booksResource;
-    }
-
-    public void setBookstoresResource(Resource bookstoresResource) {
-        this.bookstoresResource = bookstoresResource;
-    }
 
     @Value("classpath:data/books.json")
     private Resource booksResource;
@@ -51,6 +43,16 @@ public class DataLoader {
             var booksJson = StreamUtils.copyToString(booksResource.getInputStream(), StandardCharsets.UTF_8);
             var books = objectMapper.readValue(booksJson, new TypeReference<List<Book>>(){});
             bookRepository.saveAll(books);
+
+            var bookstoresJson = StreamUtils.copyToString(bookstoresResource.getInputStream(), StandardCharsets.UTF_8);
+            var bookstores = objectMapper.readValue(bookstoresJson, new TypeReference<List<Bookstore>>() {});
+
+            bookstores.forEach(bookstore -> bookstore.setInventory(books.stream()
+                        .collect(Collectors.toMap(
+                                book -> book,
+                                book -> ThreadLocalRandom.current().nextInt(1, 50)))
+            ));
+            bookstoreRepository.saveAll(bookstores);
         } catch (IOException e) {
             System.out.println("Cannot seed database" + e);
         }
