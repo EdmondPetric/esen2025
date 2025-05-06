@@ -8,3 +8,34 @@
 1745907794324:list books
 1745909317743:help
 1745909326289:list books
+1746512930414:help
+1746512935852:create bookstore
+1746512953841:create bookstore --location Budapest --priceModifier 1.1 --moneyInCashRegister 1000
+1746512982463:create bookstore --location Budapest2 --priceModifier 1.1 --moneyInCashRegister 1000
+1746512985978:list booktore
+1746512988114:list booktores
+1746512991697:help
+1746512997979:list bookstores
+1746513523388:help
+1746513530668:update bookstore
+1746513547444:list bookstores
+1746513558741:update bookstore 5
+1746513677942:list bookstores
+1746513718579:update bookstore --id 5 --location Mateszalka --priceModifier 1.1 --moneyInCashRegister 1000
+1746513728405:list bookstores
+1746515256413:help
+1746515270869:find prices 1
+1746515278829:list books
+1746515283173:list bookstores
+1746515299444:find prices 2
+1746516080642:help
+1746516093156:find by string Budapest
+1746516115188:find by String --title "Az aranyember"
+1746516118972:find by String --title Az aranyember
+1746516129733:find by string --title Az aranyember
+1746516135643:find by string --title "Az aranyember"
+1746516319382:help
+1746516332142:list books
+1746516342119:find by string --title "Egri csillagok"
+1746516360949:find by string --title "T�skev�r"
+1746516377535:find by string --title "Tüskevár"

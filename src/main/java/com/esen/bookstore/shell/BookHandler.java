@@ -50,4 +50,23 @@ public class BookHandler {
     ) {
         return bookService.update(id, title, author, publisher, price).toString();
     }
+
+    @ShellMethod(value = "Find prices", key = "find prices")
+    public String findPrices(Long id) {
+
+        return bookService.findPrices(id).toString();
+    }
+
+
+    @ShellMethod(value = "Finds by string types in books", key = "find by string")
+    public String findByAuthorOrTitleOrPublisher(
+            @ShellOption(defaultValue = ShellOption.NULL) String author,
+            @ShellOption(defaultValue = ShellOption.NULL) String publisher,
+            @ShellOption(defaultValue = ShellOption.NULL) String title
+    )
+    {
+        return bookService.findByAuthorOrTitleOrPublisher(author, title, publisher).stream()
+                .map(Book::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
+    }
 }
